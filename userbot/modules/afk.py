@@ -78,8 +78,7 @@ async def mention_afk(mention):
             elif day > 1:
                 if day > 6:
                     date = now + datetime.timedelta(
-                        days=-day, hours=-hours, minutes=-minutes
-                    )
+                        days=-day, hours=-hours, minutes=-minutes)
                     afk_str = date.strftime("%A, %Y %B %m, %H:%I")
                 else:
                     wday = now + datetime.timedelta(days=-day)
@@ -92,11 +91,9 @@ async def mention_afk(mention):
                 afk_str = f"`{int(seconds)}s` ago"
             if mention.sender_id not in USERS:
                 if AFKREASON:
-                    await mention.reply(
-                        "I'm AFK right now."
-                        f"\nBecause I'm `{AFKREASON}`."
-                        f"\nAFK since: {afk_str}"
-                    )
+                    await mention.reply("I'm AFK right now."
+                                        f"\nBecause I'm `{AFKREASON}`."
+                                        f"\nAFK since: {afk_str}")
                 else:
                     await mention.reply(str(choice(AFKSTR)))
                 USERS.update({mention.sender_id: 1})
@@ -104,11 +101,9 @@ async def mention_afk(mention):
             elif mention.sender_id in USERS:
                 if USERS[mention.sender_id] % randint(2, 4) == 0:
                     if AFKREASON:
-                        await mention.reply(
-                            "I'm still AFK."
-                            f"\nReason: `{AFKREASON}`."
-                            f"\nAFK from: {afk_str}"
-                        )
+                        await mention.reply("I'm still AFK."
+                                            f"\nReason: `{AFKREASON}`."
+                                            f"\nAFK from: {afk_str}")
                     else:
                         await mention.reply(str(choice(AFKSTR)))
                     USERS[mention.sender_id] = USERS[mention.sender_id] + 1
@@ -130,11 +125,8 @@ async def afk_on_pm(sender):
     not_afk = datetime.now()
     afk_end = not_afk.replace(microsecond=0)
     afk_str = "a while ago"
-    if (
-        sender.is_private
-        and sender.sender_id != 777000
-        and not (await sender.get_sender()).bot
-    ):
+    if (sender.is_private and sender.sender_id != 777000 and
+            not (await sender.get_sender()).bot):
         if PM_AUTO_BAN:
             try:
                 from userbot.modules.sql_helper.pm_permit_sql import is_approved
@@ -159,8 +151,7 @@ async def afk_on_pm(sender):
             elif day > 1:
                 if day > 6:
                     date = now + datetime.timedelta(
-                        days=-day, hours=-hours, minutes=-minutes
-                    )
+                        days=-day, hours=-hours, minutes=-minutes)
                     afk_since = date.strftime("%A, %Y %B %m, %H:%I")
                 else:
                     wday = now + datetime.timedelta(days=-day)
@@ -173,11 +164,9 @@ async def afk_on_pm(sender):
                 afk_str = f"`{int(seconds)}s` ago"
             if sender.sender_id not in USERS:
                 if AFKREASON:
-                    await sender.reply(
-                        "I'm AFK right now."
-                        f"\nReason: `{AFKREASON}`."
-                        f"\nAFK since: {afk_str}"
-                    )
+                    await sender.reply("I'm AFK right now."
+                                       f"\nReason: `{AFKREASON}`."
+                                       f"\nAFK since: {afk_str}")
                 else:
                     await sender.reply(str(choice(AFKSTR)))
                 USERS.update({sender.sender_id: 1})
@@ -185,11 +174,9 @@ async def afk_on_pm(sender):
             elif apprv and sender.sender_id in USERS:
                 if USERS[sender.sender_id] % randint(2, 4) == 0:
                     if AFKREASON:
-                        await sender.reply(
-                            "I'm still AFK."
-                            f"\nReason: `{AFKREASON}`."
-                            f"\nAFK from: {afk_str}"
-                        )
+                        await sender.reply("I'm still AFK."
+                                           f"\nReason: `{AFKREASON}`."
+                                           f"\nAFK from: {afk_str}")
                     else:
                         await sender.reply(str(choice(AFKSTR)))
                     USERS[sender.sender_id] = USERS[sender.sender_id] + 1
@@ -245,37 +232,25 @@ async def type_afk_is_not_true(notafk):
         if BOTLOG:
             await notafk.client.send_message(
                 BOTLOG_CHATID,
-                "You've recieved "
-                + str(COUNT_MSG)
-                + " messages from "
-                + str(len(USERS))
-                + " chats while you were away",
+                "You've recieved " + str(COUNT_MSG) + " messages from " +
+                str(len(USERS)) + " chats while you were away",
             )
             for i in USERS:
                 name = await notafk.client.get_entity(i)
                 name0 = str(name.first_name)
                 await notafk.client.send_message(
                     BOTLOG_CHATID,
-                    "["
-                    + name0
-                    + "](tg://user?id="
-                    + str(i)
-                    + ")"
-                    + " sent you "
-                    + "`"
-                    + str(USERS[i])
-                    + " messages`",
+                    "[" + name0 + "](tg://user?id=" + str(i) + ")" +
+                    " sent you " + "`" + str(USERS[i]) + " messages`",
                 )
         COUNT_MSG = 0
         USERS = {}
         AFKREASON = None
 
 
-CMD_HELP.update(
-    {
-        "afk": ">`.afk [Optional Reason]`"
-        "\nUsage: Sets you as afk.\nReplies to anyone who tags/PM's "
-        "you telling them that you are AFK(reason)."
-        "\n\nSwitches off AFK when you type back anything, anywhere."
-    }
-)
+CMD_HELP.update({
+    "afk": ">`.afk [Optional Reason]`"
+           "\nUsage: Sets you as afk.\nReplies to anyone who tags/PM's "
+           "you telling them that you are AFK(reason)."
+           "\n\nSwitches off AFK when you type back anything, anywhere."
+})

@@ -9,7 +9,8 @@ from userbot.events import register
 async def twit(event):
     q = event.pattern_match.group(1)
     if len(q) < 1:
-        await event.edit("`Please provide a Twitter account. Example: ``.tw username`")
+        await event.edit(
+            "`Please provide a Twitter account. Example: ``.tw username`")
         return
     try:
         twits = list(twitter_scraper.get_tweets(q, pages=1))
@@ -61,5 +62,7 @@ async def twit(event):
     return
 
 
-CMD_HELP.update({"twitter": ">`.twt` **username**"
-                 "\nUsage: Scrap latest tweet from someone."})
+CMD_HELP.update({
+    "twitter": ">`.twt` **username**"
+               "\nUsage: Scrap latest tweet from someone."
+})

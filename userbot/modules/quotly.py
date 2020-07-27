@@ -29,14 +29,14 @@ async def _(event):
         async with bot.conversation(chat) as conv:
             try:
                 response = conv.wait_event(
-                    events.NewMessage(incoming=True, from_users=1031952739)
-                )
+                    events.NewMessage(incoming=True, from_users=1031952739))
                 await bot.forward_messages(chat, reply_message)
                 response = await response
                 await bot.send_read_acknowledge(conv.chat_id)
 
             except YouBlockedUserError:
-                return await event.reply("`Please unblock @QuotLyBot and try again`")
+                return await event.reply(
+                    "`Please unblock @QuotLyBot and try again`")
 
             if response.text.startswith("Hi!"):
                 await event.edit(
@@ -51,5 +51,5 @@ async def _(event):
 
 
 CMD_HELP.update(
-    {"quotly": ">`.q` Reply to chat." "\nUsage: Enhance ur text to sticker.\n"}
-)
+    {"quotly": ">`.q` Reply to chat."
+               "\nUsage: Enhance ur text to sticker.\n"})

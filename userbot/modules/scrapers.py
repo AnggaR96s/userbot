@@ -95,7 +95,10 @@ async def carbon_api(e):
     await e.edit("`Processing...\n100%`")
     await e.edit("`Uploading...`")
     await e.client.send_file(
-        e.chat_id, file_path, force_document=False, reply_to=e.message.reply_to_msg_id,
+        e.chat_id,
+        file_path,
+        force_document=False,
+        reply_to=e.message.reply_to_msg_id,
     )
 
     os.remove(file_path)
@@ -133,8 +136,7 @@ async def img_sampler(event):
     paths = response.download(arguments)
     lst = paths[0][query]
     await event.client.send_file(
-        await event.client.get_input_entity(event.chat_id), lst
-    )
+        await event.client.get_input_entity(event.chat_id), lst)
     shutil.rmtree(os.path.dirname(os.path.abspath(lst[0])))
 
 
@@ -153,9 +155,8 @@ async def moni(event):
             if currency_to in current_response["rates"]:
                 current_rate = float(current_response["rates"][currency_to])
                 rebmun = round(number * current_rate, 2)
-                await event.edit(
-                    "{} {} = {} {}".format(number, currency_from, rebmun, currency_to)
-                )
+                await event.edit("{} {} = {} {}".format(number, currency_from,
+                                                        rebmun, currency_to))
             else:
                 await event.edit(
                     "`This seems to be some alien currency, which I can't convert right now.`"
@@ -190,8 +191,8 @@ async def gsearch(q_event):
         except IndexError:
             break
     await q_event.edit(
-        "**Search Query:**\n`" + match + "`\n\n**Results:**\n" + msg, link_preview=False
-    )
+        "**Search Query:**\n`" + match + "`\n\n**Results:**\n" + msg,
+        link_preview=False)
 
     if BOTLOG:
         await q_event.client.send_message(
@@ -226,8 +227,7 @@ async def wiki(wiki_q):
     await wiki_q.edit("**Search:**\n`" + match + "`\n\n**Result:**\n" + result)
     if BOTLOG:
         await wiki_q.client.send_message(
-            BOTLOG_CHATID, f"Wiki query `{match}` was executed successfully"
-        )
+            BOTLOG_CHATID, f"Wiki query `{match}` was executed successfully")
 
 
 @register(outgoing=True, pattern=r"^\.ud (.*)")
@@ -247,15 +247,8 @@ async def urban_dict(ud_e):
         if int(meanlen) >= 4096:
             await ud_e.edit("`Output too large, sending as file.`")
             file = open("output.txt", "w+")
-            file.write(
-                "Text: "
-                + query
-                + "\n\nMeaning: "
-                + mean[0]["def"]
-                + "\n\n"
-                + "Example: \n"
-                + mean[0]["example"]
-            )
+            file.write("Text: " + query + "\n\nMeaning: " + mean[0]["def"] +
+                       "\n\n" + "Example: \n" + mean[0]["example"])
             file.close()
             await ud_e.client.send_file(
                 ud_e.chat_id,
@@ -265,20 +258,13 @@ async def urban_dict(ud_e):
             if os.path.exists("output.txt"):
                 os.remove("output.txt")
             return await ud_e.delete()
-        await ud_e.edit(
-            "Text: **"
-            + query
-            + "**\n\nMeaning: **"
-            + mean[0]["def"]
-            + "**\n\n"
-            + "Example: \n__"
-            + mean[0]["example"]
-            + "__"
-        )
+        await ud_e.edit("Text: **" + query + "**\n\nMeaning: **" +
+                        mean[0]["def"] + "**\n\n" + "Example: \n__" +
+                        mean[0]["example"] + "__")
         if BOTLOG:
             await ud_e.client.send_message(
-                BOTLOG_CHATID, "ud query `" + query + "` executed successfully."
-            )
+                BOTLOG_CHATID,
+                "ud query `" + query + "` executed successfully.")
     else:
         await ud_e.edit("No result found for **" + query + "**")
 
@@ -294,8 +280,7 @@ async def text_to_speech(query):
         message = textx.text
     else:
         return await query.edit(
-            "`Give a text or reply to a message for Text-to-Speech!`"
-        )
+            "`Give a text or reply to a message for Text-to-Speech!`")
 
     try:
         gTTS(message, lang=TTS_LANG)
@@ -321,8 +306,7 @@ async def text_to_speech(query):
         os.remove("k.mp3")
         if BOTLOG:
             await query.client.send_message(
-                BOTLOG_CHATID, "Text to Speech executed successfully !"
-            )
+                BOTLOG_CHATID, "Text to Speech executed successfully !")
         await query.delete()
 
 
@@ -333,10 +317,8 @@ async def imdb(e):
         movie_name = e.pattern_match.group(1)
         remove_space = movie_name.split(" ")
         final_name = "+".join(remove_space)
-        page = get(
-            "https://www.imdb.com/find?ref_=nv_sr_fn&q=" +
-            final_name +
-            "&s=all")
+        page = get("https://www.imdb.com/find?ref_=nv_sr_fn&q=" + final_name +
+                   "&s=all")
         soup = BeautifulSoup(page.content, "lxml")
         odds = soup.findAll("tr", "odd")
         mov_title = odds[0].findNext("td").findNext("td").text
@@ -373,8 +355,7 @@ async def imdb(e):
             actors.pop()
             stars = actors[0] + "," + actors[1] + "," + actors[2]
         if soup.find("div", "inline canwrap"):
-            story_line = soup.find(
-                "div", "inline canwrap").findAll("p")[0].text
+            story_line = soup.find("div", "inline canwrap").findAll("p")[0].text
         else:
             story_line = "Not available"
         info = soup.findAll("div", "txt-block")
@@ -395,26 +376,15 @@ async def imdb(e):
             mov_rating = "Not available"
         await e.edit(
             "<a href=" + poster + ">&#8203;</a>"
-            "<b>Title : </b><code>"
-            + mov_title
-            + "</code>\n<code>"
-            + mov_details
-            + "</code>\n<b>Rating : </b><code>"
-            + mov_rating
-            + "</code>\n<b>Country : </b><code>"
-            + mov_country[0]
-            + "</code>\n<b>Language : </b><code>"
-            + mov_language[0]
-            + "</code>\n<b>Director : </b><code>"
-            + director
-            + "</code>\n<b>Writer : </b><code>"
-            + writer
-            + "</code>\n<b>Stars : </b><code>"
-            + stars
-            + "</code>\n<b>IMDB Url : </b>"
-            + mov_link
-            + "\n<b>Story Line : </b>"
-            + story_line,
+            "<b>Title : </b><code>" + mov_title + "</code>\n<code>" +
+            mov_details + "</code>\n<b>Rating : </b><code>" + mov_rating +
+            "</code>\n<b>Country : </b><code>" + mov_country[0] +
+            "</code>\n<b>Language : </b><code>" + mov_language[0] +
+            "</code>\n<b>Director : </b><code>" + director +
+            "</code>\n<b>Writer : </b><code>" + writer +
+            "</code>\n<b>Stars : </b><code>" + stars +
+            "</code>\n<b>IMDB Url : </b>" + mov_link +
+            "\n<b>Story Line : </b>" + story_line,
             link_preview=True,
             parse_mode="HTML",
         )
@@ -433,7 +403,8 @@ async def translateme(trans):
     elif textx:
         message = textx.text
     else:
-        return await trans.edit("`Give a text or reply to a message to translate!`")
+        return await trans.edit(
+            "`Give a text or reply to a message to translate!`")
 
     try:
         reply_text = translator.translate(deEmojify(message), dest=TRT_LANG)
@@ -481,8 +452,8 @@ async def lang(value):
     await value.edit(f"`Language for {scraper} changed to {LANG.title()}.`")
     if BOTLOG:
         await value.client.send_message(
-            BOTLOG_CHATID, f"`Language for {scraper} changed to {LANG.title()}.`"
-        )
+            BOTLOG_CHATID,
+            f"`Language for {scraper} changed to {LANG.title()}.`")
 
 
 @register(outgoing=True, pattern=r"^\.yt (.*)")
@@ -511,16 +482,16 @@ async def yt_search(video_q):
     await video_q.edit(reply_text)
 
 
-async def youtube_search(
-    query, order="relevance", token=None, location=None, location_radius=None
-):
+async def youtube_search(query,
+                         order="relevance",
+                         token=None,
+                         location=None,
+                         location_radius=None):
     """ Do a YouTube search. """
     youtube = build(
-        "youtube", "v3", developerKey=YOUTUBE_API_KEY, cache_discovery=False
-    )
+        "youtube", "v3", developerKey=YOUTUBE_API_KEY, cache_discovery=False)
     search_response = (
-        youtube.search()
-        .list(
+        youtube.search().list(
             q=query,
             type="video",
             pageToken=token,
@@ -529,9 +500,7 @@ async def youtube_search(
             maxResults=10,
             location=location,
             locationRadius=location_radius,
-        )
-        .execute()
-    )
+        ).execute())
 
     videos = []
 
@@ -566,13 +535,11 @@ async def download_video(v_url):
             "prefer_ffmpeg": True,
             "geo_bypass": True,
             "nocheckcertificate": True,
-            "postprocessors": [
-                {
-                    "key": "FFmpegExtractAudio",
-                    "preferredcodec": "mp3",
-                    "preferredquality": "320",
-                }
-            ],
+            "postprocessors": [{
+                "key": "FFmpegExtractAudio",
+                "preferredcodec": "mp3",
+                "preferredquality": "320",
+            }],
             "outtmpl": "%(id)s.mp3",
             "quiet": True,
             "logtostderr": False,
@@ -588,9 +555,10 @@ async def download_video(v_url):
             "prefer_ffmpeg": True,
             "geo_bypass": True,
             "nocheckcertificate": True,
-            "postprocessors": [
-                {"key": "FFmpegVideoConvertor", "preferedformat": "mp4"}
-            ],
+            "postprocessors": [{
+                "key": "FFmpegVideoConvertor",
+                "preferedformat": "mp4"
+            }],
             "outtmpl": "%(id)s.mp4",
             "logtostderr": False,
             "quiet": True,
@@ -609,14 +577,14 @@ async def download_video(v_url):
     except GeoRestrictedError:
         return await v_url.edit(
             "`Video is not available from your geographic location "
-            "due to geographic restrictions imposed by a website.`"
-        )
+            "due to geographic restrictions imposed by a website.`")
     except MaxDownloadsReached:
         return await v_url.edit("`Max-downloads limit has been reached.`")
     except PostProcessingError:
         return await v_url.edit("`There was an error during post processing.`")
     except UnavailableVideoError:
-        return await v_url.edit("`Media is not available in the requested format.`")
+        return await v_url.edit(
+            "`Media is not available in the requested format.`")
     except XAttrMetadataError as XAME:
         return await v_url.edit(f"`{XAME.code}: {XAME.msg}\n{XAME.reason}`")
     except ExtractorError:
@@ -625,7 +593,8 @@ async def download_video(v_url):
         return await v_url.edit(f"{str(type(e)): {str(e)}}")
     c_time = time.time()
     if song:
-        await v_url.edit(f"`Preparing to upload song:`\n**{rip_data['title']}**")
+        await v_url.edit(f"`Preparing to upload song:`\n**{rip_data['title']}**"
+                        )
         await v_url.client.send_file(
             v_url.chat_id,
             f"{rip_data['id']}.mp3",
@@ -638,21 +607,22 @@ async def download_video(v_url):
                 )
             ],
             progress_callback=lambda d, t: asyncio.get_event_loop().create_task(
-                progress(d, t, v_url, c_time, "Uploading..", f"{rip_data['title']}.mp3")
-            ),
+                progress(d, t, v_url, c_time, "Uploading..",
+                         f"{rip_data['title']}.mp3")),
         )
         os.remove(f"{rip_data['id']}.mp3")
         await v_url.delete()
     elif video:
-        await v_url.edit(f"`Preparing to upload video:`\n**{rip_data['title']}**")
+        await v_url.edit(
+            f"`Preparing to upload video:`\n**{rip_data['title']}**")
         await v_url.client.send_file(
             v_url.chat_id,
             f"{rip_data['id']}.mp4",
             supports_streaming=True,
             caption=rip_data["title"],
             progress_callback=lambda d, t: asyncio.get_event_loop().create_task(
-                progress(d, t, v_url, c_time, "Uploading..", f"{rip_data['title']}.mp4")
-            ),
+                progress(d, t, v_url, c_time, "Uploading..",
+                         f"{rip_data['title']}.mp4")),
         )
         os.remove(f"{rip_data['id']}.mp4")
         await v_url.delete()
@@ -675,8 +645,7 @@ async def wolfram(wvent):
     await wvent.edit(f"**{i}**\n\n" + res.text, parse_mode="Markdown")
     if BOTLOG:
         await wvent.client.send_message(
-            BOTLOG_CHATID, f".wolfram {i} was executed successfully"
-        )
+            BOTLOG_CHATID, f".wolfram {i} was executed successfully")
 
 
 def deEmojify(inputString):
@@ -684,34 +653,38 @@ def deEmojify(inputString):
     return get_emoji_regexp().sub("", inputString)
 
 
-CMD_HELP.update(
-    {
-        "img": ">`.img <search_query>`"
+CMD_HELP.update({
+    "img":
+        ">`.img <search_query>`"
         "\nUsage: Does an image search on Google and shows **IMG_LIMIT** images.",
-        "currency": ">`.crc <amount> <from> <to>`"
-        "\nUsage: Converts various currencies for you.",
-        "carbon": ">`.carbon <text> [or reply]`"
-        "\nUsage: Beautify your code using carbon.now.sh\n"
-        "Use .crblang <text> to set language for your code.",
-        "google": ">`.google <query>`"
-        "\nUsage: Does a search on Google.",
-        "wiki": ">`.wiki <query>`"
-        "\nUsage: Does a search on Wikipedia.",
-        "ud": ">`.ud <query>`"
-        "\nUsage: Does a search on Urban Dictionary.",
-        "tts": ">`.tts <text> [or reply]`"
+    "currency": ">`.crc <amount> <from> <to>`"
+                "\nUsage: Converts various currencies for you.",
+    "carbon": ">`.carbon <text> [or reply]`"
+              "\nUsage: Beautify your code using carbon.now.sh\n"
+              "Use .crblang <text> to set language for your code.",
+    "google": ">`.google <query>`"
+              "\nUsage: Does a search on Google.",
+    "wiki": ">`.wiki <query>`"
+            "\nUsage: Does a search on Wikipedia.",
+    "ud": ">`.ud <query>`"
+          "\nUsage: Does a search on Urban Dictionary.",
+    "tts":
+        ">`.tts <text> [or reply]`"
         "\nUsage: Translates text to speech for the language which is set."
         "\nUse >`.lang tts <language code>` to set language for tts. (Default is English.)",
-        "trt": ">`.trt <text> [or reply]`"
+    "trt":
+        ">`.trt <text> [or reply]`"
         "\nUsage: Translates text to the language which is set."
         "\nUse >`.lang trt <language code>` to set language for trt. (Default is English)",
-        "yt": ">`.yt <text>`"
-        "\nUsage: Does a YouTube search.",
-        "imdb": ">`.imdb <movie-name>`"
-        "\nUsage: Shows movie info and other stuff.",
-        "rip": ">`.ra <url> or .rv <url>`"
+    "yt": ">`.yt <text>`"
+          "\nUsage: Does a YouTube search.",
+    "imdb": ">`.imdb <movie-name>`"
+            "\nUsage: Shows movie info and other stuff.",
+    "rip":
+        ">`.ra <url> or .rv <url>`"
         "\nUsage: Download videos and songs from YouTube "
         "(and [many other sites](https://ytdl-org.github.io/youtube-dl/supportedsites.html)).",
-        "wolfram": ">`.wolfram` <query>"
+    "wolfram":
+        ">`.wolfram` <query>"
         "\nUsage: Get answers to questions using WolframAlpha Spoken Results API",
-    })
+})

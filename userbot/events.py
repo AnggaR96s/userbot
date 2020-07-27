@@ -13,7 +13,6 @@
 # You should have received a copy of the GNU General Public License
 # along with this program.  If not, see <https://www.gnu.org/licenses/>.
 #
-
 """ UserBot module to manage events.
  One of the main components of UserBot """
 
@@ -70,6 +69,7 @@ def register(**args):
             args["pattern"] = pattern.replace("^.", unsafe_pattern, 1)
 
     def decorator(func):
+
         async def wrapper(check):
             if check.edit_date and check.is_channel and not check.is_group:
                 return
@@ -120,8 +120,7 @@ def register(**args):
                     ftext += "\n\n\nLast 10 commits:\n"
 
                     process = await asyncsubshell(
-                        command, stdout=asyncsub.PIPE, stderr=asyncsub.PIPE
-                    )
+                        command, stdout=asyncsub.PIPE, stderr=asyncsub.PIPE)
                     stdout, stderr = await process.communicate()
                     result = str(stdout.decode().strip()) + \
                         str(stderr.decode().strip())

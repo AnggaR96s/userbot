@@ -21,10 +21,8 @@ class BlackListFilters(BASE):
 
     def __eq__(self, other):
         return bool(
-            isinstance(other, BlackListFilters)
-            and self.chat_id == other.chat_id
-            and self.trigger == other.trigger
-        )
+            isinstance(other, BlackListFilters) and
+            self.chat_id == other.chat_id and self.trigger == other.trigger)
 
 
 BlackListFilters.__table__.create(checkfirst=True)
@@ -45,11 +43,11 @@ def add_to_blacklist(chat_id, trigger):
 
 def rm_from_blacklist(chat_id, trigger):
     with BLACKLIST_FILTER_INSERTION_LOCK:
-        blacklist_filt = SESSION.query(
-            BlackListFilters).get((str(chat_id), trigger))
+        blacklist_filt = SESSION.query(BlackListFilters).get(
+            (str(chat_id), trigger))
         if blacklist_filt:
-            if trigger in CHAT_BLACKLISTS.get(
-                    str(chat_id), set()):  # sanity check
+            if trigger in CHAT_BLACKLISTS.get(str(chat_id),
+                                              set()):  # sanity check
                 CHAT_BLACKLISTS.get(str(chat_id), set()).remove(trigger)
 
             SESSION.delete(blacklist_filt)
@@ -73,21 +71,16 @@ def num_blacklist_filters():
 
 def num_blacklist_chat_filters(chat_id):
     try:
-        return (
-            SESSION.query(BlackListFilters.chat_id)
-            .filter(BlackListFilters.chat_id == str(chat_id))
-            .count()
-        )
+        return (SESSION.query(BlackListFilters.chat_id).filter(
+            BlackListFilters.chat_id == str(chat_id)).count())
     finally:
         SESSION.close()
 
 
 def num_blacklist_filter_chats():
     try:
-        return SESSION.query(
-            func.count(
-                distinct(
-                    BlackListFilters.chat_id))).scalar()
+        return SESSION.query(func.count(distinct(
+            BlackListFilters.chat_id))).scalar()
     finally:
         SESSION.close()
 

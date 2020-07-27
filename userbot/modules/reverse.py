@@ -19,11 +19,9 @@ from userbot import CMD_HELP, bot
 from userbot.events import register
 
 opener = urllib.request.build_opener()
-useragent = (
-    "Mozilla/5.0 (Linux; Android 10; SM-G975F) "
-    "AppleWebKit/537.36 (KHTML, like Gecko) "
-    "Chrome/80.0.3987.149 Mobile Safari/537.36"
-)
+useragent = ("Mozilla/5.0 (Linux; Android 10; SM-G975F) "
+             "AppleWebKit/537.36 (KHTML, like Gecko) "
+             "Chrome/80.0.3987.149 Mobile Safari/537.36")
 opener.addheaders = [("User-agent", useragent)]
 
 
@@ -52,23 +50,16 @@ async def okgoogle(img):
         # https://stackoverflow.com/questions/23270175/google-reverse-image-search-using-post-request#28792943
         searchUrl = "https://www.google.com/searchbyimage/upload"
         multipart = {
-            "encoded_image": (
-                name,
-                open(
-                    name,
-                    "rb")),
-            "image_content": ""}
+            "encoded_image": (name, open(name, "rb")),
+            "image_content": ""
+        }
         response = requests.post(
-            searchUrl,
-            files=multipart,
-            allow_redirects=False)
+            searchUrl, files=multipart, allow_redirects=False)
         fetchUrl = response.headers["Location"]
 
         if response != 400:
-            await img.edit(
-                "`Image successfully uploaded to Google. Maybe.`"
-                "\n`Parsing source now. Maybe.`"
-            )
+            await img.edit("`Image successfully uploaded to Google. Maybe.`"
+                           "\n`Parsing source now. Maybe.`")
         else:
             return await img.edit("`Google told me to fuck off.`")
 
@@ -97,8 +88,7 @@ async def okgoogle(img):
         except TypeError:
             pass
         await img.edit(
-            f"[{guess}]({fetchUrl})\n\n[Visually similar images]({imgspage})"
-        )
+            f"[{guess}]({fetchUrl})\n\n[Visually similar images]({imgspage})")
 
 
 async def ParseSauce(googleurl):
@@ -144,5 +134,8 @@ async def scam(results, lim):
     return imglinks
 
 
-CMD_HELP.update({"reverse": ">`.reverse`"
-                 "\nUsage: Reply to a pic/sticker to revers-search it on Google Images !!"})
+CMD_HELP.update({
+    "reverse":
+        ">`.reverse`"
+        "\nUsage: Reply to a pic/sticker to revers-search it on Google Images !!"
+})

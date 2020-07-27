@@ -32,7 +32,8 @@ def paginate_help(page_number, loaded_modules, prefix):
     helpable_modules = [p for p in loaded_modules if not p.startswith("_")]
     helpable_modules = sorted(helpable_modules)
     modules = [
-        custom.Button.inline("{} {}".format("🔸", x), data="ub_modul_{}".format(x))
+        custom.Button.inline(
+            "{} {}".format("🔸", x), data="ub_modul_{}".format(x))
         for x in helpable_modules
     ]
     pairs = list(zip(modules[::number_of_cols], modules[1::number_of_cols]))
@@ -41,18 +42,15 @@ def paginate_help(page_number, loaded_modules, prefix):
     max_num_pages = ceil(len(pairs) / number_of_rows)
     modulo_page = page_number % max_num_pages
     if len(pairs) > number_of_rows:
-        pairs = pairs[
-            modulo_page * number_of_rows: number_of_rows * (modulo_page + 1)
-        ] + [
-            (
-                custom.Button.inline(
-                    "⬅️", data="{}_prev({})".format(prefix, modulo_page)
-                ),
-                custom.Button.inline(
-                    "➡️", data="{}_next({})".format(prefix, modulo_page)
-                ),
-            )
-        ]
+        pairs = pairs[modulo_page * number_of_rows:number_of_rows *
+                      (modulo_page + 1)] + [(
+                          custom.Button.inline(
+                              "⬅️",
+                              data="{}_prev({})".format(prefix, modulo_page)),
+                          custom.Button.inline(
+                              "➡️",
+                              data="{}_next({})".format(prefix, modulo_page)),
+                      )]
     return pairs
 
 
@@ -73,17 +71,14 @@ else:
 LOGS = getLogger(__name__)
 
 if version_info < (3, 8, 0):
-    LOGS.info(
-        "You MUST have a python version of at least 3.8."
-        "Multiple features depend on this. Bot quitting."
-    )
+    LOGS.info("You MUST have a python version of at least 3.8."
+              "Multiple features depend on this. Bot quitting.")
     quit(1)
 
 # Check if the config was edited by using the already used variable.
 # Basically, its the 'virginity check' for the config file ;)
 CONFIG_CHECK = os.environ.get(
-    "___________PLOX_______REMOVE_____THIS_____LINE__________", None
-)
+    "___________PLOX_______REMOVE_____THIS_____LINE__________", None)
 
 if CONFIG_CHECK:
     LOGS.info(
@@ -113,9 +108,8 @@ HEROKU_APP_NAME = os.environ.get("HEROKU_APP_NAME", None)
 HEROKU_API_KEY = os.environ.get("HEROKU_API_KEY", None)
 
 # Custom (forked) repo URL for updater.
-UPSTREAM_REPO_URL = os.environ.get(
-    "UPSTREAM_REPO_URL", "https://github.com/GengKapak/DCLXVI.git"
-)
+UPSTREAM_REPO_URL = os.environ.get("UPSTREAM_REPO_URL",
+                                   "https://github.com/GengKapak/DCLXVI.git")
 # UPSTREAM_REPO_URL branch, the default is master
 UPSTREAM_REPO_BRANCH = os.environ.get("UPSTREAM_REPO_BRANCH", "master")
 
@@ -136,9 +130,8 @@ ALIVE_NAME = os.environ.get("ALIVE_NAME", None)
 
 # Chrome stuff
 CHROME_DRIVER = os.environ.get("CHROME_DRIVER", "/usr/bin/chromedriver")
-GOOGLE_CHROME_BIN = os.environ.get(
-    "GOOGLE_CHROME_BIN",
-    "/usr/bin/google-chrome")
+GOOGLE_CHROME_BIN = os.environ.get("GOOGLE_CHROME_BIN",
+                                   "/usr/bin/google-chrome")
 
 # Weather stuff
 OPEN_WEATHER_MAP_APPID = os.environ.get("OPEN_WEATHER_MAP_APPID", None)
@@ -178,7 +171,6 @@ if LASTFM_API and LASTFM_SECRET and LASTFM_USERNAME and LASTFM_PASS:
 else:
     lastfm = None
 
-
 # bit.ly module
 BITLY_TOKEN = os.environ.get("BITLY_TOKEN", None)
 
@@ -197,8 +189,8 @@ if G_PHOTOS_AUTH_TOKEN_ID:
     G_PHOTOS_AUTH_TOKEN_ID = int(G_PHOTOS_AUTH_TOKEN_ID)
 
 # Download directory location
-TEMP_DOWNLOAD_DIRECTORY = os.environ.get(
-    "TMP_DOWNLOAD_DIRECTORY", "./downloads")
+TEMP_DOWNLOAD_DIRECTORY = os.environ.get("TMP_DOWNLOAD_DIRECTORY",
+                                         "./downloads")
 
 # Terminal Alias
 TERM_ALIAS = os.environ.get("TERM_ALIAS", None)
@@ -231,9 +223,7 @@ WATCH_COUNTRY = os.environ.get("WATCH_COUNTRY", None)
 DEEZER_ARL_TOKEN = os.environ.get("DEEZER_ARL_TOKEN", None)
 
 # Image for alive
-IMG = os.environ.get(
-    "IMG",
-    "https://telegra.ph/file/2a7b0bd8547a80c019493.jpg")
+IMG = os.environ.get("IMG", "https://telegra.ph/file/2a7b0bd8547a80c019493.jpg")
 
 # Set default timezone
 TZ = os.environ.get("TZ", "Asia/Jakarta")
@@ -245,8 +235,10 @@ if not os.path.exists("bin"):
     os.mkdir("bin")
 
 binaries = {
-    "https://raw.githubusercontent.com/adekmaulana/megadown/master/megadown": "bin/megadown",
-    "https://raw.githubusercontent.com/yshalsager/cmrudl.py/master/cmrudl.py": "bin/cmrudl",
+    "https://raw.githubusercontent.com/adekmaulana/megadown/master/megadown":
+        "bin/megadown",
+    "https://raw.githubusercontent.com/yshalsager/cmrudl.py/master/cmrudl.py":
+        "bin/cmrudl",
 }
 
 for binary, path in binaries.items():
@@ -287,10 +279,8 @@ with bot:
         bot(JoinChannelRequest("@GengKapak"))
 
         tgbot = TelegramClient(
-            "TG_BOT_TOKEN",
-            api_id=API_KEY,
-            api_hash=API_HASH).start(
-            bot_token=BOT_TOKEN)
+            "TG_BOT_TOKEN", api_id=API_KEY,
+            api_hash=API_HASH).start(bot_token=BOT_TOKEN)
 
         dugmeler = CMD_HELP
         me = bot.get_me()
@@ -334,17 +324,15 @@ with bot:
 You can convert your account to bot and use them. Remember, you can't manage someone else's bot! All installation details are explained from GitHub address below.""",
                     buttons=[
                         [
-                            custom.Button.url(
-                                "Follow Channel",
-                                "https://t.me/GengKapak"),
-                            custom.Button.url(
-                                "Build by",
-                                "https://t.me/NGGDCLXVI"),
+                            custom.Button.url("Follow Channel",
+                                              "https://t.me/GengKapak"),
+                            custom.Button.url("Build by",
+                                              "https://t.me/NGGDCLXVI"),
                         ],
                         [
                             custom.Button.url(
-                                "GitHub",
-                                "https://github.com/GengKapak/DCLXVI")],
+                                "GitHub", "https://github.com/GengKapak/DCLXVI")
+                        ],
                     ],
                     link_preview=False,
                 )
@@ -352,15 +340,13 @@ You can convert your account to bot and use them. Remember, you can't manage som
 
         @tgbot.on(
             events.callbackquery.CallbackQuery(  # pylint:disable=E0602
-                data=re.compile(rb"helpme_next\((.+?)\)")
-            )
-        )
+                data=re.compile(rb"helpme_next\((.+?)\)")))
         async def on_plug_in_callback_query_handler(event):
             if event.query.user_id == uid:  # pylint:disable=E0602
                 current_page_number = int(
                     event.data_match.group(1).decode("UTF-8"))
-                buttons = paginate_help(
-                    current_page_number + 1, dugmeler, "helpme")
+                buttons = paginate_help(current_page_number + 1, dugmeler,
+                                        "helpme")
                 # https://t.me/TelethonChat/115200
                 await event.edit(buttons=buttons)
             else:
@@ -369,15 +355,15 @@ You can convert your account to bot and use them. Remember, you can't manage som
 
         @tgbot.on(
             events.callbackquery.CallbackQuery(  # pylint:disable=E0602
-                data=re.compile(rb"helpme_prev\((.+?)\)")
-            )
-        )
+                data=re.compile(rb"helpme_prev\((.+?)\)")))
         async def on_plug_in_callback_query_handler(event):
             if event.query.user_id == uid:  # pylint:disable=E0602
                 current_page_number = int(
                     event.data_match.group(1).decode("UTF-8"))
                 buttons = paginate_help(
-                    current_page_number - 1, dugmeler, "helpme"  # pylint:disable=E0602
+                    current_page_number - 1,
+                    dugmeler,
+                    "helpme"  # pylint:disable=E0602
                 )
                 # https://t.me/TelethonChat/115200
                 await event.edit(buttons=buttons)
@@ -387,9 +373,7 @@ You can convert your account to bot and use them. Remember, you can't manage som
 
         @tgbot.on(
             events.callbackquery.CallbackQuery(  # pylint:disable=E0602
-                data=re.compile(b"ub_modul_(.*)")
-            )
-        )
+                data=re.compile(b"ub_modul_(.*)")))
         async def on_plug_in_callback_query_handler(event):
             if event.query.user_id == uid:  # pylint:disable=E0602
                 modul_name = event.data_match.group(1).decode("UTF-8")
@@ -397,21 +381,15 @@ You can convert your account to bot and use them. Remember, you can't manage som
                 cmdhel = str(CMD_HELP[modul_name])
                 if len(cmdhel) > 150:
                     help_string = (
-                        str(CMD_HELP[modul_name])[:150]
-                        + "\n\nRead more .help "
-                        + modul_name
-                        + " "
-                    )
+                        str(CMD_HELP[modul_name])[:150] +
+                        "\n\nRead more .help " + modul_name + " ")
                 else:
                     help_string = str(CMD_HELP[modul_name])
 
                 reply_pop_up_alert = (
-                    help_string
-                    if help_string is not None
-                    else "{} No document has been written for module.".format(
-                        modul_name
-                    )
-                )
+                    help_string if help_string is not None else
+                    "{} No document has been written for module.".format(
+                        modul_name))
             else:
                 reply_pop_up_alert = "Please make for yourself, don't use my bot!"
 
@@ -426,13 +404,10 @@ You can convert your account to bot and use them. Remember, you can't manage som
     try:
         bot.loop.run_until_complete(check_botlog_chatid())
     except BaseException:
-        LOGS.info(
-            "ERROR: The BOTLOG_CHATID variable entered is not valid. "
-            "Please check the value you entered. "
-            "Bot is crashed .."
-        )
+        LOGS.info("ERROR: The BOTLOG_CHATID variable entered is not valid. "
+                  "Please check the value you entered. "
+                  "Bot is crashed ..")
         quit(1)
-
 
 # Global Variables
 COUNT_MSG = 0

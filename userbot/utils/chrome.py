@@ -14,7 +14,6 @@
 # You should have received a copy of the GNU General Public License
 # along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
-
 import os
 
 from selenium import webdriver
@@ -31,8 +30,7 @@ async def chrome(chrome_options=None):
     prefs = {"download.default_directory": TEMP_DOWNLOAD_DIRECTORY}
     chrome_options.add_experimental_option("prefs", prefs)
     return webdriver.Chrome(
-        executable_path=CHROME_DRIVER,
-        options=chrome_options)
+        executable_path=CHROME_DRIVER, options=chrome_options)
 
 
 async def options():

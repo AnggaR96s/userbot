@@ -57,26 +57,23 @@ async def _(event):
             pass
 
 
-CMD_HELP.update(
-    {
-        "dice": ">`.dice` or .dice 1 to 6 any value\
+CMD_HELP.update({
+    "dice":
+        ">`.dice` or .dice 1 to 6 any value\
 \nUsage: hahaha just a magic.\
 \nwarning: `you would be in trouble if you input any other value than mentioned.`"
-    }
-)
+})
 
-CMD_HELP.update(
-    {
-        "basketball": ">`.ball` or .ball 1 to 5 any value\
+CMD_HELP.update({
+    "basketball":
+        ">`.ball` or .ball 1 to 5 any value\
 \nUsage: hahaha just a magic.\
 \nwarning: `you would be in trouble if you input any other value than mentioned.`"
-    }
-)
+})
 
-CMD_HELP.update(
-    {
-        "dart": ">`.dart` or .dart 1 to 6 any value\
+CMD_HELP.update({
+    "dart":
+        ">`.dart` or .dart 1 to 6 any value\
 \nUsage: hahaha just a magic.\
 \nwarning: `you would be in trouble if you input any other value than mentioned.`"
-    }
-)
+})

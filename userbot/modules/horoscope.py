@@ -26,23 +26,20 @@ async def astro(e):
     com = horoscope.compatibility
     ln = horoscope.lucky_number
 
-    result = (
-        f"**Horoscope for `{x}`**:\n"
-        f"**Mood :** `{mood}`\n"
-        f"**Lucky Time :** `{lt}`\n"
-        f"**Lucky Color :** `{col}`\n"
-        f"**Lucky Number :** `{ln}`\n"
-        f"**Compatibility :** `{com}`\n"
-        f"**Description :** `{desc}`\n"
-    )
+    result = (f"**Horoscope for `{x}`**:\n"
+              f"**Mood :** `{mood}`\n"
+              f"**Lucky Time :** `{lt}`\n"
+              f"**Lucky Color :** `{col}`\n"
+              f"**Lucky Number :** `{ln}`\n"
+              f"**Compatibility :** `{com}`\n"
+              f"**Description :** `{desc}`\n")
 
     await e.edit(result)
 
 
-CMD_HELP.update(
-    {
-        "horoscope": ">`.hc` **sign**\
+CMD_HELP.update({
+    "horoscope":
+        ">`.hc` **sign**\
         \nExample: `.hc scorpio`\
         \nUsage: Gets your horoscope."
-    }
-)
+})

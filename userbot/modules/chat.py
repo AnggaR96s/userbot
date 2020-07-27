@@ -27,7 +27,8 @@ async def useridgetter(target):
                 name = "@" + message.forward.sender.username
             else:
                 name = "*" + message.forward.sender.first_name + "*"
-        await target.edit("**Name:** {} \n**User ID:** `{}`".format(name, user_id))
+        await target.edit("**Name:** {} \n**User ID:** `{}`".format(
+            name, user_id))
 
 
 @register(outgoing=True, pattern=r"^\.link(?: |$)(.*)")
@@ -39,8 +40,9 @@ async def permalink(mention):
     if custom:
         await mention.edit(f"[{custom}](tg://user?id={user.id})")
     else:
-        tag = (user.first_name.replace("\u2060", "")
-               if user.first_name else user.username)
+        tag = (
+            user.first_name.replace("\u2060", "")
+            if user.first_name else user.username)
         await mention.edit(f"[{tag}](tg://user?id={user.id})")
 
 
@@ -103,9 +105,8 @@ async def mute_chat(mute_e):
     await sleep(2)
     await mute_e.delete()
     if BOTLOG:
-        await mute_e.client.send_message(
-            BOTLOG_CHATID, str(mute_e.chat_id) + " was silenced."
-        )
+        await mute_e.client.send_message(BOTLOG_CHATID,
+                                         str(mute_e.chat_id) + " was silenced.")
 
 
 @register(incoming=True, disable_errors=True)
@@ -150,9 +151,9 @@ async def sedNinjaToggle(event):
         await event.delete()
 
 
-CMD_HELP.update(
-    {
-        "chat": ">`.chatid`"
+CMD_HELP.update({
+    "chat":
+        ">`.chatid`"
         "\nUsage: Fetches the current chat's ID"
         "\n\n>`.userid`"
         "\nUsage: Fetches the ID of the user in reply, if its a forwarded message, finds the ID for the source."
@@ -169,4 +170,5 @@ CMD_HELP.update(
         "\nUsage: Generate a permanent link to the user's profile with optional custom text."
         "\n\n>`.regexninja on/off`"
         "\nUsage: Globally enable/disables the regex ninja module."
-        "\nRegex Ninja module helps to delete the regex bot's triggering messages."})
+        "\nRegex Ninja module helps to delete the regex bot's triggering messages."
+})

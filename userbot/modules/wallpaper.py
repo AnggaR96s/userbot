@@ -123,5 +123,7 @@ async def walld(strin: str):
     return tit_link
 
 
-CMD_HELP.update({"wallpaper": ">`.wall` <query>."
-                 "\nUsage: Search some wallpaper picture."})
+CMD_HELP.update({
+    "wallpaper": ">`.wall` <query>."
+                 "\nUsage: Search some wallpaper picture."
+})

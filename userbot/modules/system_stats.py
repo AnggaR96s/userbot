@@ -22,9 +22,9 @@ from userbot.events import register
 
 # ================= CONSTANT =================
 DEFAULTUSER = str(ALIVE_NAME) if ALIVE_NAME else uname().node
+
+
 # ============================================
-
-
 async def get_readable_time(seconds: int) -> str:
     count = 0
     up_time = ""
@@ -117,7 +117,10 @@ async def sysdetails(sysd):
     if not sysd.text[0].isalpha() and sysd.text[0] not in ("/", "#", "@", "!"):
         try:
             fetch = await asyncrunapp(
-                "neofetch", "--stdout", stdout=asyncPIPE, stderr=asyncPIPE,
+                "neofetch",
+                "--stdout",
+                stdout=asyncPIPE,
+                stderr=asyncPIPE,
             )
 
             stdout, stderr = await fetch.communicate()
@@ -136,20 +139,33 @@ async def bot_ver(event):
         return
     if which("git") is not None:
         ver = await asyncrunapp(
-            "git", "describe", "--all", "--long", stdout=asyncPIPE, stderr=asyncPIPE,
+            "git",
+            "describe",
+            "--all",
+            "--long",
+            stdout=asyncPIPE,
+            stderr=asyncPIPE,
         )
         stdout, stderr = await ver.communicate()
         verout = str(stdout.decode().strip()) + str(stderr.decode().strip())
 
         rev = await asyncrunapp(
-            "git", "rev-list", "--all", "--count", stdout=asyncPIPE, stderr=asyncPIPE,
+            "git",
+            "rev-list",
+            "--all",
+            "--count",
+            stdout=asyncPIPE,
+            stderr=asyncPIPE,
         )
         stdout, stderr = await rev.communicate()
         revout = str(stdout.decode().strip()) + str(stderr.decode().strip())
 
-        await event.edit(
-            "`Userbot Version: " f"{verout}" "` \n" "`Revision: " f"{revout}" "`"
-        )
+        await event.edit("`Userbot Version: "
+                         f"{verout}"
+                         "` \n"
+                         "`Revision: "
+                         f"{revout}"
+                         "`")
     else:
         await event.edit(
             "Shame that you don't have git, you're running - 'v1.beta.4' anyway!"
@@ -165,7 +181,11 @@ async def pipcheck(pip):
     if pipmodule:
         await pip.edit("`Searching . . .`")
         pipc = await asyncrunapp(
-            "pip3", "search", pipmodule, stdout=asyncPIPE, stderr=asyncPIPE,
+            "pip3",
+            "search",
+            pipmodule,
+            stdout=asyncPIPE,
+            stderr=asyncPIPE,
         )
 
         stdout, stderr = await pipc.communicate()
@@ -178,23 +198,21 @@ async def pipcheck(pip):
                 file.write(pipout)
                 file.close()
                 await pip.client.send_file(
-                    pip.chat_id, "output.txt", reply_to=pip.id,
+                    pip.chat_id,
+                    "output.txt",
+                    reply_to=pip.id,
                 )
                 remove("output.txt")
                 return
-            await pip.edit(
-                "**Query: **\n`"
-                f"pip3 search {pipmodule}"
-                "`\n**Result: **\n`"
-                f"{pipout}"
-                "`"
-            )
+            await pip.edit("**Query: **\n`"
+                           f"pip3 search {pipmodule}"
+                           "`\n**Result: **\n`"
+                           f"{pipout}"
+                           "`")
         else:
-            await pip.edit(
-                "**Query: **\n`"
-                f"pip3 search {pipmodule}"
-                "`\n**Result: **\n`No Result Returned/False`"
-            )
+            await pip.edit("**Query: **\n`"
+                           f"pip3 search {pipmodule}"
+                           "`\n**Result: **\n`No Result Returned/False`")
     else:
         await pip.edit("`Use .help pip to see an example`")
 
@@ -204,17 +222,15 @@ async def amireallyalive(alive):
     """ For .on command, check if the bot is running.  """
     uptime = await get_readable_time((time.time() - StartTime))
     img = IMG
-    caption = (
-        "`"
-        "I'm alive, at your services....\n"
-        f"-------------------------------\n"
-        f"👤 User             : {DEFAULTUSER}\n\n"
-        f"🐍 Python           : {python_version()}\n\n"
-        f"💻 Telethon version : {version.__version__}\n\n"
-        f"🕒 Bot Uptime       : {uptime}\n"
-        f"-------------------------------\n"
-        "`"
-    )
+    caption = ("`"
+               "I'm alive, at your services....\n"
+               f"-------------------------------\n"
+               f"👤 User             : {DEFAULTUSER}\n\n"
+               f"🐍 Python           : {python_version()}\n\n"
+               f"💻 Telethon version : {version.__version__}\n\n"
+               f"🕒 Bot Uptime       : {uptime}\n"
+               f"-------------------------------\n"
+               "`")
     await bot.send_file(alive.chat_id, img, caption=caption)
     await alive.delete()
 
@@ -240,18 +256,19 @@ async def amireallyalivereset(ureset):
     await ureset.edit("`" "Successfully reset user for alive!" "`")
 
 
-CMD_HELP.update({"sysd": ">`.sysd`"
-                 "\nUsage: Shows system information using neofetch.\n\n"
-                 ">`.spc`"
-                 "\nUsage: Show system specification.",
-                 "botver": ">`.botver`"
-                 "\nUsage: Shows the userbot version.",
-                 "pip": ">`.pip <module(s)>`"
-                 "\nUsage: Does a search of pip modules(s).",
-                 "alive": ">`.alive`"
-                 "\nUsage: Type .alive to see wether your bot is working or not."
-                 "\n\n>`.aliveu <text>`"
-                 "\nUsage: Changes the 'user' in alive to the text you want."
-                 "\n\n>`.resetalive`"
-                 "\nUsage: Resets the user to default.",
-                 })
+CMD_HELP.update({
+    "sysd": ">`.sysd`"
+            "\nUsage: Shows system information using neofetch.\n\n"
+            ">`.spc`"
+            "\nUsage: Show system specification.",
+    "botver": ">`.botver`"
+              "\nUsage: Shows the userbot version.",
+    "pip": ">`.pip <module(s)>`"
+           "\nUsage: Does a search of pip modules(s).",
+    "alive": ">`.alive`"
+             "\nUsage: Type .alive to see wether your bot is working or not."
+             "\n\n>`.aliveu <text>`"
+             "\nUsage: Changes the 'user' in alive to the text you want."
+             "\n\n>`.resetalive`"
+             "\nUsage: Resets the user to default.",
+})

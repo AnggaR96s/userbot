@@ -5,7 +5,6 @@
 
 # port to userbot from uniborg by @keselekpermen69
 
-
 import io
 import re
 
@@ -25,7 +24,8 @@ async def on_new_message(event):
             try:
                 await event.delete()
             except Exception:
-                await event.reply("I do not have DELETE permission in this chat")
+                await event.reply("I do not have DELETE permission in this chat"
+                                 )
                 await sleep(1)
                 await reply.delete()
                 sql.rm_from_blacklist(event.chat_id, snip.lower())
@@ -36,14 +36,12 @@ async def on_new_message(event):
 async def on_add_black_list(addbl):
     text = addbl.pattern_match.group(1)
     to_blacklist = list(
-        {trigger.strip() for trigger in text.split("\n") if trigger.strip()}
-    )
+        {trigger.strip() for trigger in text.split("\n") if trigger.strip()})
 
     for trigger in to_blacklist:
         sql.add_to_blacklist(addbl.chat_id, trigger.lower())
     await addbl.edit(
-        "`Added` **{}** `to the blacklist in the current chat`".format(text)
-    )
+        "`Added` **{}** `to the blacklist in the current chat`".format(text))
 
 
 @register(outgoing=True, pattern=r"^\.listbl(?: |$)(.*)")
@@ -75,8 +73,7 @@ async def on_view_blacklist(listbl):
 async def on_delete_blacklist(rmbl):
     text = rmbl.pattern_match.group(1)
     to_unblacklist = list(
-        {trigger.strip() for trigger in text.split("\n") if trigger.strip()}
-    )
+        {trigger.strip() for trigger in text.split("\n") if trigger.strip()})
 
     successful = 0
     for trigger in to_unblacklist:
@@ -85,13 +82,17 @@ async def on_delete_blacklist(rmbl):
     if not successful:
         await rmbl.edit("`Blacklist` **{}** `doesn't exist.`".format(text))
     else:
-        await rmbl.edit("`Blacklist` **{}** `was deleted successfully`".format(text))
+        await rmbl.edit(
+            "`Blacklist` **{}** `was deleted successfully`".format(text))
 
 
-CMD_HELP.update({"blacklist": ">`.listbl`"
-                 "\nUsage: Lists all active userbot blacklist in a chat."
-                 "\n\n>`.addbl` <keyword>"
-                 "\nUsage: Saves the message to the 'blacklist keyword'."
-                 "\nThe bot will delete to the message whenever 'blacklist keyword' is mentioned."
-                 "\n\n>`.rmbl` <keyword>"
-                 "\nUsage: Stops the specified blacklist."})
+CMD_HELP.update({
+    "blacklist":
+        ">`.listbl`"
+        "\nUsage: Lists all active userbot blacklist in a chat."
+        "\n\n>`.addbl` <keyword>"
+        "\nUsage: Saves the message to the 'blacklist keyword'."
+        "\nThe bot will delete to the message whenever 'blacklist keyword' is mentioned."
+        "\n\n>`.rmbl` <keyword>"
+        "\nUsage: Stops the specified blacklist."
+})

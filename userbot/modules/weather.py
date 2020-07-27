@@ -21,9 +21,9 @@ from userbot.events import register
 # ===== CONSTANT =====
 DEFCITY = WEATHER_DEFCITY if WEATHER_DEFCITY else None
 DEFLANG = WEATHER_DEFLANG if WEATHER_DEFLANG else "en"
+
+
 # ====================
-
-
 async def get_tz(con):
     """ Get time zone of the given country. """
     """ Credits: @aragon12 and @zakaryan2004. """
@@ -43,8 +43,7 @@ async def get_weather(weather):
 
     if not OWM_API:
         return await weather.edit(
-            "`Get an API key from` https://openweathermap.org/ `first.`"
-        )
+            "`Get an API key from` https://openweathermap.org/ `first.`")
 
     APPID = OWM_API
 
@@ -58,8 +57,7 @@ async def get_weather(weather):
         CITY = weather.pattern_match.group(1)
 
     timezone_countries = {
-        timezone: country
-        for country, timezones in c_tz.items()
+        timezone: country for country, timezones in c_tz.items()
         for timezone in timezones
     }
 
@@ -119,17 +117,15 @@ async def get_weather(weather):
         return datetime.fromtimestamp(unix, tz=ctimezone).strftime("%I:%M %p")
 
     await weather.edit(
-        f"**Temperature:** `{celsius(curtemp)}°C | {fahrenheit(curtemp)}°F`\n"
-        + f"**Min. Temp.:** `{celsius(min_temp)}°C | {fahrenheit(min_temp)}°F`\n"
-        + f"**Max. Temp.:** `{celsius(max_temp)}°C | {fahrenheit(max_temp)}°F`\n"
-        + f"**Humidity:** `{humidity}%`\n"
-        + f"**Wind:** `{kmph[0]} kmh | {mph[0]} mph, {findir}`\n"
-        + f"**Sunrise:** `{sun(sunrise)}`\n"
-        + f"**Sunset:** `{sun(sunset)}`\n\n"
-        + f"**{desc}**\n"
-        + f"`{cityname}, {fullc_n}`\n"
-        + f"`{time}`"
-    )
+        f"**Temperature:** `{celsius(curtemp)}°C | {fahrenheit(curtemp)}°F`\n" +
+        f"**Min. Temp.:** `{celsius(min_temp)}°C | {fahrenheit(min_temp)}°F`\n"
+        +
+        f"**Max. Temp.:** `{celsius(max_temp)}°C | {fahrenheit(max_temp)}°F`\n"
+        + f"**Humidity:** `{humidity}%`\n" +
+        f"**Wind:** `{kmph[0]} kmh | {mph[0]} mph, {findir}`\n" +
+        f"**Sunrise:** `{sun(sunrise)}`\n" +
+        f"**Sunset:** `{sun(sunset)}`\n\n" + f"**{desc}**\n" +
+        f"`{cityname}, {fullc_n}`\n" + f"`{time}`")
 
 
 @register(outgoing=True, pattern=r"^\.wtlang (.*)")
@@ -177,30 +173,23 @@ async def get_wtr(wtr):
     except KeyError:
         desc = weather["weatherDesc"][0]["value"]
 
-    text = (
-        f"**Weather for:** `{CITY}`"
-        + f"**{desc}**\n\n"
-        + f"**Temperature:** `{tempC}°C | {tempF}°F`\n"
-        + f"**Min. Temp.:** `{mintempC}°C | {mintempF}°F`\n"
-        + f"**Max. Temp.:** `{maxtempC}°C | {maxtempF}°F`\n"
-        + f"**Humidity:** `{humidity}%`\n"
-        + f"**Wind:** `{windK}Km/h | {windM}Mp/h, {windD}`\n"
-        + f"**Sunrise:** `{sunrise}`\n"
-        + f"**Sunset:** `{sunset}`\n"
-        + f"**Updated on:** `{time}`\n\n"
-        + f"`{region}, {country}`"
-    )
+    text = (f"**Weather for:** `{CITY}`" + f"**{desc}**\n\n" +
+            f"**Temperature:** `{tempC}°C | {tempF}°F`\n" +
+            f"**Min. Temp.:** `{mintempC}°C | {mintempF}°F`\n" +
+            f"**Max. Temp.:** `{maxtempC}°C | {maxtempF}°F`\n" +
+            f"**Humidity:** `{humidity}%`\n" +
+            f"**Wind:** `{windK}Km/h | {windM}Mp/h, {windD}`\n" +
+            f"**Sunrise:** `{sunrise}`\n" + f"**Sunset:** `{sunset}`\n" +
+            f"**Updated on:** `{time}`\n\n" + f"`{region}, {country}`")
 
     await wtr.edit(text)
 
 
-CMD_HELP.update(
-    {
-        "weather": ">`.weather <city> or .weather <city>, <country name/code>`"
-        "\nUsage: Gets the weather of a city.\n\n"
-        ">`.wtr <city> or .wtr <city>, <country name/code>`"
-        "\nUsage: Gets the weather of a city.\n\n"
-        ">`.wtlang` <language code>"
-        "\nUsage: Set Default language for `.wtr`"
-    }
-)
+CMD_HELP.update({
+    "weather": ">`.weather <city> or .weather <city>, <country name/code>`"
+               "\nUsage: Gets the weather of a city.\n\n"
+               ">`.wtr <city> or .wtr <city>, <country name/code>`"
+               "\nUsage: Gets the weather of a city.\n\n"
+               ">`.wtlang` <language code>"
+               "\nUsage: Set Default language for `.wtr`"
+})

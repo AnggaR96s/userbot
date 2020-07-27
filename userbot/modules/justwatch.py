@@ -1,7 +1,6 @@
 # Uniborg Plugin for getting list of sites where you can watch a particular Movie or TV-Show
 # Author: Sumanjay (https://github.com/cyberboysumanjay) (@cyberboysumanjay)
 # All rights reserved.
-
 """Syntax: .watch Movie/TV Show"""
 from justwatch import JustWatch
 
@@ -23,11 +22,9 @@ def get_stream_data(query):
     results = just_watch.search_for_item(query=query)
     movie = results["items"][0]
     stream_data["title"] = movie["title"]
-    stream_data["movie_thumb"] = (
-        "https://images.justwatch.com"
-        + movie["poster"].replace("{profile}", "")
-        + "s592"
-    )
+    stream_data["movie_thumb"] = ("https://images.justwatch.com" +
+                                  movie["poster"].replace("{profile}", "") +
+                                  "s592")
     stream_data["release_year"] = movie["original_release_year"]
     try:
         print(movie["cinema_release_date"])
@@ -123,9 +120,7 @@ async def _(event):
     await event.delete()
 
 
-CMD_HELP.update(
-    {
-        "watch": ">`.watch` **Movies or TV Show"
-        "\nUsage: Find data about Movies or TV Show at `justwatch.com`."
-    }
-)
+CMD_HELP.update({
+    "watch": ">`.watch` **Movies or TV Show"
+             "\nUsage: Find data about Movies or TV Show at `justwatch.com`."
+})

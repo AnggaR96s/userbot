@@ -24,12 +24,12 @@ def getmusic(get, DEFAULT_AUDIO_QUALITY):
     search = get
 
     headers = {
-        "User-Agent": "Mozilla/5.0 (compatible; Googlebot/2.1; +http://www.google.com/bot.html)"
+        "User-Agent":
+            "Mozilla/5.0 (compatible; Googlebot/2.1; +http://www.google.com/bot.html)"
     }
 
     html = requests.get(
-        "https://www.youtube.com/results?search_query=" +
-        search,
+        "https://www.youtube.com/results?search_query=" + search,
         headers=headers).text
     soup = BeautifulSoup(html, "html.parser")
     for link in soup.find_all("a"):
@@ -40,10 +40,8 @@ def getmusic(get, DEFAULT_AUDIO_QUALITY):
 
     video_link = "http://www.youtube.com/" + video_link
     command = (
-        "youtube-dl --write-thumbnail --extract-audio --audio-format mp3 --audio-quality " +
-        DEFAULT_AUDIO_QUALITY +
-        " " +
-        video_link)
+        "youtube-dl --write-thumbnail --extract-audio --audio-format mp3 --audio-quality "
+        + DEFAULT_AUDIO_QUALITY + " " + video_link)
     os.system(command)
 
 
@@ -51,11 +49,11 @@ def getmusic(get, DEFAULT_AUDIO_QUALITY):
 def getmusicvideo(cat):
     search = cat
     headers = {
-        "User-Agent": "Mozilla/5.0 (compatible; Googlebot/2.1; +http://www.google.com/bot.html)"
+        "User-Agent":
+            "Mozilla/5.0 (compatible; Googlebot/2.1; +http://www.google.com/bot.html)"
     }
     html = requests.get(
-        "https://www.youtube.com/results?search_query=" +
-        search,
+        "https://www.youtube.com/results?search_query=" + search,
         headers=headers).text
     soup = BeautifulSoup(html, "html.parser")
     for link in soup.find_all("a"):
@@ -89,9 +87,8 @@ async def _(event):
     loa = l[0]
     img_extensions = ["webp", "jpg", "jpeg", "webp"]
     img_filenames = [
-        fn_img
-        for fn_img in os.listdir()
-        if any(fn_img.endswith(ext_img) for ext_img in img_extensions)
+        fn_img for fn_img in os.listdir() if any(
+            fn_img.endswith(ext_img) for ext_img in img_extensions)
     ]
     thumb_image = img_filenames[0]
     await event.edit("`Yeah.. Uploading your song..`")
@@ -105,8 +102,7 @@ async def _(event):
         caption=query,
         reply_to=reply_to_id,
         progress_callback=lambda d, t: asyncio.get_event_loop().create_task(
-            progress(d, t, event, c_time, "[UPLOAD]", loa)
-        ),
+            progress(d, t, event, c_time, "[UPLOAD]", loa)),
     )
     await event.delete()
     os.system("rm -rf *.mp3")
@@ -170,8 +166,7 @@ async def _(event):
             )
         ],
         progress_callback=lambda d, t: asyncio.get_event_loop().create_task(
-            progress(d, t, event, c_time, "[UPLOAD]", loa)
-        ),
+            progress(d, t, event, c_time, "[UPLOAD]", loa)),
     )
     await event.delete()
     os.remove(thumb_image)
@@ -202,20 +197,20 @@ async def _(event):
             await event.edit("`Downloading...`")
             try:
                 response = conv.wait_event(
-                    events.NewMessage(incoming=True, from_users=752979930)
-                )
+                    events.NewMessage(incoming=True, from_users=752979930))
                 msg = await bot.send_message(chat, track)
                 respond = await response
                 res = conv.wait_event(
-                    events.NewMessage(incoming=True, from_users=752979930)
-                )
+                    events.NewMessage(incoming=True, from_users=752979930))
                 r = await res
                 await bot.send_read_acknowledge(conv.chat_id)
             except YouBlockedUserError:
-                await event.reply("`Unblock `@SpotifyMusicDownloaderBot` and retry`")
+                await event.reply(
+                    "`Unblock `@SpotifyMusicDownloaderBot` and retry`")
                 return
             await bot.forward_messages(event.chat_id, respond.message)
-        await event.client.delete_messages(conv.chat_id, [msg.id, r.id, respond.id])
+        await event.client.delete_messages(conv.chat_id,
+                                           [msg.id, r.id, respond.id])
         await event.delete()
     except TimeoutError:
         return await event.edit(
@@ -255,14 +250,12 @@ async def _(event):
             await event.edit("`Sending Your Music...`")
             await asyncio.sleep(3)
             await bot.send_file(event.chat_id, respond)
-        await event.client.delete_messages(
-            conv.chat_id, [msg.id, response.id, respond.id]
-        )
+        await event.client.delete_messages(conv.chat_id,
+                                           [msg.id, response.id, respond.id])
         await event.delete()
     except TimeoutError:
         return await event.edit(
-            "`Error: `@WooMaiBot` is not responding or Song not found!.`"
-        )
+            "`Error: `@WooMaiBot` is not responding or Song not found!.`")
 
 
 @register(outgoing=True, pattern=r"^\.sdd(?: |$)(.*)")
@@ -289,18 +282,17 @@ async def _(event):
                 return
             await bot.send_file(event.chat_id, song, caption=details.text)
             await event.client.delete_messages(
-                conv.chat_id, [msg_start.id, response.id, msg.id, details.id, song.id]
-            )
+                conv.chat_id,
+                [msg_start.id, response.id, msg.id, details.id, song.id])
             await event.delete()
     except TimeoutError:
         return await event.edit(
-            "`Error: `@MusicHuntersBot` is not responding or Song not found!.`"
-        )
+            "`Error: `@MusicHuntersBot` is not responding or Song not found!.`")
 
 
-CMD_HELP.update(
-    {
-        "song": ">`.song` **Artist - Song Title**"
+CMD_HELP.update({
+    "song":
+        ">`.song` **Artist - Song Title**"
         "\nUsage: Finding and uploading song.\n\n"
         ">`.vsong` **Artist - Song Title**"
         "\nUsage: Finding and uploading videoclip.\n\n"
@@ -313,4 +305,5 @@ CMD_HELP.update(
         ">`.net now`"
         "\nUsage: Download current LastFM scrobble use `@WooMaiBot`.\n\n"
         ">`.sdd <Spotify/Deezer Link>`"
-        "\nUsage: Download music from Spotify or Deezer use `@MusicHuntersBot`."})
+        "\nUsage: Download music from Spotify or Deezer use `@MusicHuntersBot`."
+})
