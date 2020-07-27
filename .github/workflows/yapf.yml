@@ -1,0 +1,32 @@
+name: autoyapf
+on: 
+  push: 
+    branches: [dev]
+  pull_request:
+    branches: [dev]
+jobs:
+  autoyapf:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@master
+      - name: Auto yapf
+        uses: Accipiter7/yapf-action@master
+      - name: Import GPG key
+        id: import_gpg
+        uses: crazy-max/ghaction-import-gpg@v2
+        with:
+            git_user_signingkey: true
+            git_commit_gpgsign: true
+        env:
+          GPG_PRIVATE_KEY: ${{ secrets.GPG_PRIVATE_KEY }}
+          PASSPHRASE: ${{ secrets.PASSPHRASE }}
+      - name: Create Pull Request
+        uses: peter-evans/create-pull-request@master
+        with:
+          commit-message: Automated code formatting.
+          committer: Angga<angga@linuxmail.org>
+          title: Automated code formatting.
+          body: This is an automated code formatting pull request.
+          labels: Code Formatting
+          reviewers: AnggaR96s 
+          branch: autofix
